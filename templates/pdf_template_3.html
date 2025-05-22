@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fiche d'évaluation">
+    <link rel="stylesheet" href="/static/css/template_3.css">
+    <title>{{ data.title or "Fiche d'évaluation" }}</title>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/Lpp.png') }}" alt="Logo établissement">
+        </div>
+        <div class="note-box">
+            Note : .......... / {{ data.bareme or '20' }}
+        </div>
+    </div>
+
+    <header class="student-meta">
+        <div class="meta-row">
+            <div><strong>Nom :</strong> ................................................</div>
+            <div><strong>Prénom :</strong> ............................................</div>
+        </div>
+        <div class="meta-row">
+            <div><strong>Classe :</strong> ............................................</div>
+            <div><strong>Date :</strong> ........../............/................</div>
+        </div>
+    </header>
+
+    <h1 class="main-title">{{ data.title }}</h1>
+
+    <!-- Bloc Critères d'évaluation -->
+    <section class="section">
+        <h2>Critères d’évaluation</h2>
+        <table class="evaluation-table">
+            <thead>
+                <tr>
+                    <th>Critère</th>
+                    <th>Niveau</th>
+                    <th>Commentaires</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for critere in [
+                    'Maîtrise des connaissances', 
+                    'Qualité du travail', 
+                    'Respect des consignes',
+                    'Participation / Implication', 
+                    'Autonomie', 
+                    'Esprit d’équipe'
+                ] %}
+                <tr>
+                    <td>{{ loop.index }}. {{ critere }}</td>
+                    <td>□ Excellent □ Bon □ Satisfaisant □ À améliorer</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Sections d'exercice -->
+    {% for section in data.sections %}
+    <section class="section">
+        <h2>{{ section.title }}</h2>
+
+        {% if section.instructions %}
+        <p class="instructions"><em>Consignes :</em> {{ section.instructions }}</p>
+        {% endif %}
+
+        {% if section.questions %}
+        <ol>
+            {% for q in section.questions if q %}
+            <li>
+                {{ q }}
+                <div class="answer-space"></div>
+            </li>
+            {% endfor %}
+        </ol>
+        {% endif %}
+
+        {% if section.table_data %}
+        <table>
+            {% for row in section.table_data %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% if section.image_url %}
+        <div class="image-container">
+            <img src="{{ section.image_url }}" alt="Illustration">
+        </div>
+        {% endif %}
+    </section>
+    {% endfor %}
+
+</body>
+</html>

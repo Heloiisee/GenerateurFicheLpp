@@ -1,0 +1,131 @@
+@page {
+    size: A4;
+    margin: 2cm;
+    @bottom-center {
+        content: "Page " counter(page) " / " counter(pages);
+        font-size: 10pt;
+        font-style: italic;
+        color: #555;
+    }
+}
+
+body {
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    padding: 1cm;
+    background: #fdfdfd;
+    color: #2c3e50;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
+    gap: 40px;
+}
+
+.logo-container img {
+   
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+}
+.student-info {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: right;
+}
+
+.main-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #003366;
+    border-bottom: 2px solid #3399cc;
+    padding-bottom: 10px;
+}
+
+.section {
+    margin-bottom: 1.5em;
+    
+}
+
+.section h2 {
+    color: #003366;
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-left: 4px solid #3399cc;
+    padding-left: 10px;
+}
+
+.instructions {
+    background: #eef6fc;
+    padding: 1em;
+    border-left: 4px solid #3399cc;
+    margin-bottom: 1em;
+    border-radius: 4px;
+}
+
+.questions {
+    margin-top: 1em;
+}
+
+.question {
+    background: #f1f1f1;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.bullet {
+    color: #3399cc;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.image-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5em;
+}
+
+td, th {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+th {
+    background-color: #3399cc;
+    color: white;
+}
+
+.answer-zone {
+    background: repeating-linear-gradient(
+        to bottom,
+        #fff,
+        #fff 20px,
+        #ccc 21px
+    );
+    height: 80px;
+    margin-bottom: 10px;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+}
+

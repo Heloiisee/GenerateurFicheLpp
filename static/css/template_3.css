@@ -1,0 +1,132 @@
+@page {
+    size: A4;
+    margin: 2cm;
+    @bottom-center {
+        content: "Page " counter(page) " / " counter(pages);
+        font-size: 10pt;
+        font-style: italic;
+        color: #555;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Georgia", serif;
+    font-size: 12pt;
+    color: #222;
+    line-height: 1.6;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    height: 150px;
+    width: auto;
+}
+
+.note-box {
+    font-size: 14pt;
+    font-weight: bold;
+    border: 2px solid #333;
+    padding: 8px 14px;
+    background-color: #fff;
+}
+
+.student-meta {
+    margin-bottom: 30px;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.meta-row div {
+    width: 48%;
+}
+
+.main-title {
+    text-align: center;
+    font-size: 22pt;
+    margin: 20px 0;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 10px;
+    color: #003366;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section h2 {
+    font-size: 16pt;
+    color: #003366;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+}
+
+.instructions {
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+ol {
+    padding-left: 1.2em;
+}
+
+ol li {
+    margin-bottom: 30px;
+}
+
+.answer-space {
+    border: 1px dashed #999;
+    height: 80px;
+    margin-top: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11pt;
+    margin-top: 10px;
+}
+
+.evaluation-table th {
+    background-color: #003366;
+    color: white;
+}
+
+th, td {
+    border: 1px solid #999;
+    padding: 6px;
+    text-align: left;
+}
+
+.image-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+
+.footer {
+    position: fixed;
+    bottom: 1cm;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 10pt;
+    color: #555;
+}

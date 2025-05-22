@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: "Georgia", serif;
+            margin: 2cm;
+            font-size: 12pt;
+            color: #222;
+        }
+
+        header {
+            border-bottom: 1px solid #aaa;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .meta div {
+            width: 30%;
+        }
+
+        .note {
+            text-align: right;
+            font-size: 14pt;
+            font-weight: bold;
+            border: 2px solid #333;
+            padding: 5px 10px;
+            display: inline-block;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 20pt;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 16pt;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 5px;
+        }
+
+        .instructions {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        ol {
+            padding-left: 1.2em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 11pt;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 6px;
+            text-align: left;
+        }
+
+        .answer {
+            margin-top: 5px;
+            margin-left: 1em;
+            font-style: italic;
+            color: #006400;
+            background: #eef9ee;
+            border-left: 3px solid #2e8b57;
+            padding: 5px 10px;
+        }
+
+        img {
+            max-width: 400px;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: start; margin-bottom: 30px;">
+    <img src="{{ url_for('static', filename='images/Lpp.png') }}" alt="Logo" style="max-height: 30vh;">
+</div>
+    <header>
+        <div class="meta">
+            <div><strong>Nom :</strong> .....................................</div>
+            <div><strong>Prénom :</strong> .....................................</div>
+            <div><strong>Date :</strong> ........../............/..........</div>
+        </div>
+        <div class="note">Note : .......... / 20</div>
+        <h1>{{ data.title }}</h1>
+    </header>
+
+    {% for section in data.sections %}
+        <div class="section">
+            <h2>{{ section.title }}</h2>
+            <p class="instructions">{{ section.instructions }}</p>
+
+            {% if section.questions %}
+                <ol>
+                    {% for q, r in section.questions|zip(section.answers) if q %}
+                        <li>
+                            {{ q }}
+                            {% if r %}
+                                <div class="answer">Réponse attendue : {{ r }}</div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% endif %}
+
+            {% if section.table_data %}
+                <table>
+                    {% for row in section.table_data %}
+                        <tr>
+                            {% for cell in row %}
+                                <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+
+            {% if section.image_url %}
+                <img src="file://{{ section.image_url }}" alt="Illustration">
+            {% endif %}
+        </div>
+    {% endfor %}
+
+</body>
+</html>
