@@ -1,0 +1,7 @@
+Améliorations ou propositions possibles pour ce site : 
+
+    - Améliorer l'ajout des images sur le document
+    - Ajouter des nouveaux templates(selon la demande de l'utilisateur)
+    - Régler le problème pour afficher plusieurs sections
+    - Retirer le logo des fiches pour le remplacer par une phrase
+    

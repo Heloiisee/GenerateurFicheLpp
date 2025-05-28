@@ -14,9 +14,6 @@
 <body>
 
     <div class="header">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='images/Lpp.png') }}" alt="Logo établissement">
-        </div>
         <div class="note-box">
             Note : .......... / {{ data.bareme or '20' }}
         </div>
@@ -42,22 +39,22 @@
             <thead>
                 <tr>
                     <th>Critère</th>
-                    <th>Niveau</th>
+                    <th>Réussite des exercices</th>
                     <th>Commentaires</th>
                 </tr>
             </thead>
             <tbody>
                 {% for critere in [
                     'Maîtrise des connaissances', 
-                    'Qualité du travail', 
                     'Respect des consignes',
-                    'Participation / Implication', 
-                    'Autonomie', 
-                    'Esprit d’équipe'
+                    'Réussite des exercices',
+                    'Autonomie',
+
+                    
                 ] %}
                 <tr>
                     <td>{{ loop.index }}. {{ critere }}</td>
-                    <td>□ Excellent □ Bon □ Satisfaisant □ À améliorer</td>
+                    <td>□ Excellent □ En cours d'acquisition □ Satisfaisant  □ </td>
                     <td></td>
                 </tr>
                 {% endfor %}
