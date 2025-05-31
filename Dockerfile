@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copie les fichiers nécessaires
-COPY requirements.txt ./
+COPY requirement.txt ./
 RUN pip install --no-cache-dir -r requirement.txt
 
 # Copie tout le code dans l'image
