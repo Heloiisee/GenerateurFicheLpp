@@ -22,7 +22,7 @@ WORKDIR /app
 
 # Copie les fichiers nécessaires
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirement.txt
 
 # Copie tout le code dans l'image
 COPY . .
