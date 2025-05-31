@@ -1,0 +1,17 @@
+app = "fichegen-app"  # Nom de ton app Fly.io
+
+primary_region = "cdg"  # Paris, tu peux changer selon ta localisation
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  FLASK_ENV = "production"
+  FLASK_APP = "app.py"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_start_machines = true
+  auto_stop_machines = true
+  min_machines_running = 0

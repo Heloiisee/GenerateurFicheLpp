@@ -1,24 +1,66 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for, session
 from werkzeug.utils import secure_filename
 from pathlib import Path
 from weasyprint import HTML
 from io import BytesIO
+from dotenv import load_dotenv
 import csv
 import os
 
+load_dotenv()  # Charge les variables d'environnement depuis .env si présent
+
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
+
+# Configuration du dossier de téléchargement
 UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# ---------- AUTHENTIFICATION ----------
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        if username == os.getenv("LOGIN_USERNAME") and password == os.getenv("LOGIN_PASSWORD"):
+            session['logged_in'] = True
+            return redirect(url_for('form'))
+        else:
+            return render_template("login.html", error="Identifiants incorrects")
+    return render_template("login.html")
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
+# ---------- FORMULAIRE ----------
 @app.route('/', methods=['GET', 'POST'])
 def form():
+
+    # Autorise automatiquement si accès depuis localhost
+    if request.remote_addr in ['127.0.0.1', '::1']:
+        session['logged_in'] = True
+        print("✅ Connexion automatique activée depuis localhost")
+
+
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    
+
     if request.method == 'POST':
         return generate_pdf(request)
     return render_template("form.html")
 
 @app.route('/preview', methods=['POST'])
 def preview():
+
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    
     sections = []
     i = 0
     while f'sections[{i}][title]' in request.form:

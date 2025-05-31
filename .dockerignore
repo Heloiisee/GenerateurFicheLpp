@@ -1,0 +1,26 @@
+# Empêche les fichiers de config ou d'environnement locaux
+.env
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Empêche les données temporaires ou inutiles
+*.db
+*.sqlite3
+*.log
+
+# Dossiers spécifiques à l'IDE
+.vscode/
+.idea/
+
+# Dossiers temporaires
+tmp/
+.cache/
+dist/
+build/
+
+# Données utilisateur
+instance/
+uploads/
+static/uploads/
