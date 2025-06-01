@@ -1,40 +1,40 @@
-FROM python:3.11-slim
+FROM debian:bookworm-slim
 
-# Empêche les messages interactifs
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Mise à jour et installation des dépendances système pour WeasyPrint
+# Mise à jour + Python + dépendances système pour WeasyPrint
 RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-dev \
     build-essential \
-    libpango1.0-0 \
     libcairo2 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 \
     libffi-dev \
     libxml2 \
     libxslt1.1 \
-    libpangocairo-1.0-0 \
-    libpangoft2-1.0-0 \
-    fonts-liberation \
+    libpq-dev \
+    libjpeg-dev \
+    zlib1g-dev \
     curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    fonts-liberation \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Crée le répertoire de travail
+# Crée le dossier de l'app
 WORKDIR /app
 
-# Copie les fichiers requis
+# Copie des fichiers
 COPY requirement.txt .
-RUN pip install --no-cache-dir -r requirement.txt
+RUN pip3 install --no-cache-dir -r requirement.txt
 
-# Copie le reste du projet
 COPY . .
 
-# Configuration Flask
+# Variables d’environnement pour Flask
 ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 
-# Expose le port utilisé par l'app
 EXPOSE 8000
 
-# Lancement de l'app
 CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
