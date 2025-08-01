@@ -1,42 +1,119 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion | GenFiches</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="apple-touch-icon" sizes="180x180" href="/static/images/favicon_io(2)/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon_io(2)/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon_io(2)/favicon-16x16.png">
     <link rel="manifest" href="/static/images/favicon_io(2)/site.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <title>Connexion</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 50px; }
-        .login-container {
-            max-width: 400px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h2 { text-align: center; }
-        .error { color: red; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="/static/css/formulaire.css">
 </head>
 <body>
+    <!-- Overlay de chargement -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+        </div>
+        <div class="loading-text">Connexion en cours...<br>Redirection vers le formulaire</div>
+    </div>
+
     <div class="login-container">
-        <h2>Connexion</h2>
-        {% if error %}
-            <p class="error">{{ error }}</p>
+        <div class="profile-icon">
+            <i class="fas fa-user"></i>
+        </div>
+        
+        <h2>Connexion à votre compte</h2>
+        <p class="subtitle">Entrez vos identifiants pour continuer</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                <i class="fas fa-{% if category == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
         {% endif %}
-        <form method="POST">
-            <label>Nom d'utilisateur</label>
-            <input type="text" name="username" required><br><br>
-            <label>Mot de passe</label>
-            <input type="password" name="password" required><br><br>
-            <button type="submit">Se connecter</button>
+        {% endwith %}
+        
+        <form id="loginForm" method="POST" action="/login">
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur" required autocomplete="username">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <div class="input-with-icon">
+                    <span class="input-icon">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input type="password" id="password" name="password" placeholder="Votre mot de passe" required autocomplete="current-password">
+                    <button type="button" class="password-toggle" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">Se connecter</button>
         </form>
     </div>
+
+    <script>
+        // Fonctionnalité pour afficher/masquer le mot de passe
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Changer l'icône
+            this.innerHTML = type === 'password' ? 
+                '<i class="fas fa-eye"></i>' : 
+                '<i class="fas fa-eye-slash"></i>';
+        });
+        
+        // Animation d'entrée
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginContainer = document.querySelector('.login-container');
+            loginContainer.style.opacity = '0';
+            loginContainer.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                loginContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                loginContainer.style.opacity = '1';
+                loginContainer.style.transform = 'translateY(0)';
+            }, 100);
+        });
+        
+        // Gestion du chargement lors de la connexion
+        const loginForm = document.getElementById('loginForm');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        
+        loginForm.addEventListener('submit', function(e) {
+            // Empêcher le rechargement immédiat de la page
+            e.preventDefault();
+            
+            // Afficher l'animation de chargement
+            loadingOverlay.classList.add('active');
+            
+            // Simuler une requête asynchrone
+            setTimeout(() => {
+                // Soumettre le formulaire après un court délai
+                this.submit();
+            }, 1500); // 1.5 secondes pour voir l'animation
+        });
+    </script>
 </body>
 </html>

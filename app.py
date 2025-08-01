@@ -1,11 +1,17 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for, session
+from flask import Flask, render_template, request, send_file, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
 from pathlib import Path
+from functools import wraps
 from weasyprint import HTML
 from io import BytesIO
 from dotenv import load_dotenv
+import glob
+import threading
+import time
 import csv
 import os
+import uuid 
+from PIL import Image
 
 load_dotenv()  # Charge les variables d'environnement depuis .env si présent
 
@@ -17,43 +23,79 @@ UPLOAD_FOLDER = 'static/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+def clean_temp_files():
+    temp_files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], "preview_*"))
+    for file_path in temp_files:
+        try:
+            os.remove(file_path)
+            print(f"🗑️ Supprimé au démarrage : {file_path}")
+        except Exception as e:
+            print(f"⚠️ Erreur suppression : {file_path} -> {e}")
+
+def delete_file_later(filepath, delay=300):
+    def delete():
+        time.sleep(delay)
+        if os.path.exists(filepath):
+            try:
+                os.remove(filepath)
+                print(f"🕔 Supprimé après délai : {filepath}")
+            except Exception as e:
+                print(f"⚠️ Erreur suppression différée : {e}")
+    threading.Thread(target=delete, daemon=True).start()
+
+
+# ---------- DECORATEUR ----------
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 # ---------- AUTHENTIFICATION ----------
 @app.route('/login', methods=['GET', 'POST'])
+
 def login():
+
+    if session.get('logged_in'):
+        return redirect(url_for('form'))
+    
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 
         if username == os.getenv("LOGIN_USERNAME") and password == os.getenv("LOGIN_PASSWORD"):
             session['logged_in'] = True
+            flash("Connexion réussie ✅", "success")
             return redirect(url_for('form'))
         else:
-            return render_template("login.html", error="Identifiants incorrects")
+            flash("Identifiants incorrects ❌", "danger")
+            return redirect(url_for('login'))
+
     return render_template("login.html")
 
 @app.route('/logout')
 def logout():
     session.clear()
+    flash("Vous avez été déconnecté avec succès", "success",)
     return redirect(url_for('login'))
 
 
 # ---------- FORMULAIRE ----------
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/form', methods=['GET', 'POST'])
 def form():
 
     # Autorise automatiquement si accès depuis localhost
     if request.remote_addr in ['127.0.0.1', '::1']:
         session['logged_in'] = True
         print("✅ Connexion automatique activée depuis localhost")
-
-
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
     
+    username = os.getenv("LOGIN_USERNAME", "Utilisateur")
 
     if request.method == 'POST':
         return generate_pdf(request)
-    return render_template("form.html")
+    return render_template("form.html", username=username)
 
 @app.route('/preview', methods=['POST'])
 def preview():
@@ -85,6 +127,7 @@ def preview():
             rel_path = os.path.join("static/uploads", f"preview_{i}_{filename}")
             abs_path = os.path.join(app.root_path, rel_path)
             image_file.save(abs_path)
+            delete_file_later(abs_path)
             section['image_url'] = '/' + rel_path  # pour le navigateur (HTML preview)
 
 
@@ -129,19 +172,25 @@ def generate_pdf(req):
         sections.append(section)
         i += 1
 
-    bareme = request.form.get("bareme")
-
-    data = { 
-        "sections": sections, 
-            "bareme": bareme 
-        }   
+    bareme = req.form.get("bareme")
+    data = { "sections": sections, "bareme": bareme }
     template_choice = req.form.get("template")
 
+    # Génération du HTML
     html = render_template(f"{template_choice}.html", data=data)
-    pdf_file = BytesIO()
-    HTML(string=html, base_url=req.root_url).write_pdf(pdf_file)
-    pdf_file.seek(0)
-    return send_file(pdf_file, download_name="fiche_exercice.pdf", as_attachment=True)
+
+    # 🧾 Création d’un fichier PDF temporaire
+    temp_pdf_filename = f"fiche_{uuid.uuid4().hex}.pdf"
+    temp_pdf_path = os.path.join(app.config['UPLOAD_FOLDER'], temp_pdf_filename)
+
+    # Création du PDF
+    HTML(string=html, base_url=req.root_url).write_pdf(temp_pdf_path)
+
+    # 🔁 Suppression automatique après 5 minutes
+    delete_file_later(temp_pdf_path, delay=300)
+
+    return send_file(temp_pdf_path, download_name="fiche_exercice.pdf", as_attachment=True)
 
 if __name__ == '__main__':
+    clean_temp_files()
     app.run(debug=True, port=8000)

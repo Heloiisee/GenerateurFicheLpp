@@ -10,11 +10,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <title>Créer une fiche</title>
+    
 </head>
 <body>
-    <div style="text-align: start; margin-bottom: 30px; position:absolute;">
-    <img src="{{ url_for('static', filename='images/Lpp.png') }}" alt="Logo" style="max-height: 30vh;">
-</div>
+
+    <div class="user-bar">
+        <div class="user-info">
+            <i class="fas fa-user"></i> {{ username }}
+        </div>
+        <a href="/logout" class="logout-btn" title="Déconnexion">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/Lpp.png') }}" alt="Logo">
+    </div>
 
     <h1>Générateur de fiche multi-sections</h1>
 
@@ -38,18 +49,19 @@
             <input type="text" name="bareme" placeholder="Ex: 20" />
         </div>
 
-        <br><br>
-        <button type="submit">Générer le PDF</button>
-        <button type="submit" formaction="/preview" formtarget="_blank">Aperçu HTML</button>
+        <div class="buttons-container">
+            <button type="submit">Générer le PDF</button>
+            <button type="submit" formaction="/preview" formtarget="_blank">Aperçu HTML</button>
+        </div>
     </form>
 
-   <script src="/static/script.js"></script>
-   <footer style="text-align: center;">
+    <script src="/static/script.js"></script>
+    <footer style="text-align: center;">
     <p> 
         <small>
             © 2025 GenFiches - Tous droits réservés
         </small>
     </p>
-   </footer>
+    </footer>
 </body>
 </html>

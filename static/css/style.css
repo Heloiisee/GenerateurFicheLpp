@@ -1,93 +1,244 @@
 body {
-            font-family: "Segoe UI", Roboto, sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
-            padding: 2em;
-            color: #333;
-        }
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 2em;
+    color: #333;
+    position: relative;
+}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #442c5c;
-        }
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #442c5c;
+}
 
-        form {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 2em;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        }
+form {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
 
-        .section {
-            border: 1px solid #dfe6e9;
-            background: #fafafa;
-            padding: 1em;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
+.section {
+    border: 1px solid #dfe6e9;
+    background: #fafafa;
+    padding: 1em;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
 
-        .section h3 {
-            margin-top: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #4b0231;
-        }
+.section h3 {
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #4b0231;
+}
 
-        .question-item {
-            margin-bottom: 10px;
-        }
+.question-item {
+    margin-bottom: 10px;
+}
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin: 10px 0 5px;
-        }
+label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 5px;
+}
 
-        input[type="text"], textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
+input[type="text"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
 
-        textarea {
-            resize: vertical;
-        }
+textarea {
+    resize: vertical;
+}
 
-        .remove-btn, .remove-section-btn {
-            background: none;
-            border: none;
-            color: #e74c3c;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1.2em;
-        }
+.remove-btn, .remove-section-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.2em;
+}
 
-        .remove-btn:hover, .remove-section-btn:hover {
-            color: #c0392b;
-        }
+.remove-btn:hover, .remove-section-btn:hover {
+    color: #c0392b;
+}
 
-        button {
-            background-color: #4b0231;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1em;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px 5px 0 0;
-        }
+button {
+    background-color: #4b0231;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 5px 0 0;
+}
 
-        button:hover {
-            background-color: #2980b9;
-        }
+button:hover {
+    background-color: #2980b9;
+}
 
-        #bareme-container {
-            margin-top: 10px;
-        }
+#bareme-container {
+    margin-top: 10px;
+}
+
+/* Logo responsive */
+.logo-container {
+    text-align: start;
+    margin-bottom: 30px;
+}
+
+.logo-container img {
+    max-height: 30vh;
+    max-width: 100%;
+}
+
+/* Boutons responsive */
+.buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.buttons-container button {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Section responsive */
+.section-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.section-content > div {
+    flex: 1 1 300px;
+}
+
+/* Barre utilisateur */
+.user-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.user-info {
+    font-weight: 500;
+    color: #4b0231;
+}
+
+.logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #c0392b;
+    transform: scale(1.1);
+}
+
+/* Ajustements pour petits écrans */
+@media (max-width: 768px) {
+    body {
+        padding: 1em;
+    }
+    
+    form {
+        padding: 1.5em;
+    }
+    
+    .section {
+        padding: 0.8em;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+        margin-top: 10px;
+    }
+    
+    .logo-container {
+        margin-bottom: 10px;
+    }
+    
+    .logo-container img {
+        max-height: 20vh;
+    }
+    
+    .buttons-container {
+        flex-direction: column;
+    }
+    
+    .buttons-container button {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .user-bar {
+        top: 10px;
+        right: 10px;
+        gap: 10px;
+        padding: 6px 12px;
+    }
+    
+    .user-info {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0.5em;
+    }
+    
+    form {
+        padding: 1em;
+    }
+    
+    .section {
+        padding: 0.6em;
+    }
+    
+    h1 {
+        font-size: 1.3em;
+    }
+    
+    button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    
+    .user-bar {
+        top: 5px;
+        right: 5px;
+    }
+}
